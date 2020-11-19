@@ -1,11 +1,39 @@
 <html>
 	<head>
+		<meta charset="utf-8">
 		<title>Foucault's Pendulum</title>
 	</head>
-	<body onload="InitDemo();">
-		<canvas id="Canvas_demo" width="1080" height="720">
-		</canvas>
-		<br/>
+	<body>
+		<script src="three.js"></script>
 		<script src="app.js"></script>
+		<script>
+			const scene = new THREE.Scene();
+			scene.background = new THREE.Color( 0x707070);
+			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+			const geometry = new THREE.BoxGeometry();
+			const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+			const cube = new THREE.Mesh( geometry, material );
+			scene.add( cube );
+
+			const geometry2 = new THREE.SphereGeometry( 1, 32, 32 );
+			const material2 = new THREE.MeshNormalMaterial();
+			const sphere = new THREE.Mesh(geometry2, material2 );
+			scene.add(sphere);
+
+			camera.position.z = 20;
+
+			const animate = function () {
+				requestAnimationFrame( animate );
+
+				renderer.render( scene, camera );
+			};
+
+			animate();
+		</script>
 	</body>
 </html>
