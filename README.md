@@ -1,4 +1,4 @@
-<h1>Proyecto Final - Gráficas Conputacionales</h1>
+<h1>Proyecto Final - Gráficas Computacionales</h1>
 <h2>Foucault's Pendulum</h2>
 <br>
 <h3>Miembros del equipo</h3>
@@ -7,6 +7,12 @@
     Andres Carlos Barrera Basilio A00815749 <br>
     Bruno Mendez Maldonado A01194018
 </p>
+<br>
+<h2>Propuesta del proyecto - Escenario</h2>
+<p>
+    Nuestra escena principal se trata de crear un péndulo colgante que puedas hacer que oscile por medio del teclado.
+</p>
+<br>
 <p>
     Nota: Se debe iniciar un servidor para ver el péndulo <br>
     Una vez en pantalla, el pendulo empezará a moverse al pulsar una tecla
