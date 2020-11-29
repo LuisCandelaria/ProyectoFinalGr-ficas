@@ -197,7 +197,7 @@
             // Señala el inicio de una animación
             requestAnimationFrame(rotate);
             // Hacemos la rotación del pivote que hace que mueva la cuerda y la esfera, solo llegando hasta 90º
-            pivot.rotation.x = Math.sin(Date.now() * 0.0001) * Math.PI * 0.5;
+            pivot.rotation.x = Math.sin(Date.now() * 0.001) * Math.PI * 0.5;
 		}
 
         // Llamamos la función de render
