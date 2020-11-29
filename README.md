@@ -8,6 +8,6 @@
     Bruno Mendez Maldonado A01194018
 </p>
 <p>
-    Nota: Se debe iniciar un servidor para ver el péndulo
+    Nota: Se debe iniciar un servidor para ver el péndulo <br>
     Una vez en pantalla, el pendulo empezará a moverse al pulsar una tecla
 </p>
