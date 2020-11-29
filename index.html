@@ -204,8 +204,8 @@
         // Llamamos la función de render
 		render();
 
-        // Llamamos la animación del péndulo
-        rotate();
+        // Llamamos la animación del péndulo mediante el teclado
+        document.addEventListener('keydown', rotate, false);
 
     </script>
     
