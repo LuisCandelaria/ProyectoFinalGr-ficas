@@ -7,7 +7,3 @@
     Andres Carlos Barrera Basilio A00815749 <br>
     Bruno Mendez Maldonado A01194018
 </p>
-<br>
-<p>
-    Página del pándulo:
-</p>
