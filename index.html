@@ -200,23 +200,26 @@
             // Hacemos la rotación del pivote que hace que mueva la cuerda y la esfera, solo llegando hasta 90º
             pivot.rotation.x = Math.sin(Date.now() * speed) * Math.PI * 0.5;
 		}
-		
+			// Funcion que agrega funcionalidad a las teclas
 			document.addEventListener("keydown", onDocumentKeyDown, false);
 			function onDocumentKeyDown(event) {
 				var keyCode = event.which;
+				//Si es tecla W aumenta la velocidad, S disminiuye la velocidad, y barra de espacio detiene el pendulo. Cualquier otra tecla inicia la funcion
 				if (keyCode == 87 && speed<0.0021) {
 					speed=speed+0.0001;
-				} else if (keyCode == 83 && speed>0.0000) {
+				} else if (keyCode == 83 && speed>0.0001) {
 					speed=speed-0.0001;
+				}
+				else if (keyCode == 32) {
+					speed=0;
+				}
+				else{
+					rotate();
 				}
 			};
 
         // Llamamos la función de render
 		render();
-
-        // Llamamos la animación del péndulo
-        rotate();
-
     </script>
     
 </body>
