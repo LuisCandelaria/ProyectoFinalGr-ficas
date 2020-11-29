@@ -196,7 +196,8 @@
 		var rotate = function() {
             // Señala el inicio de una animación
             requestAnimationFrame(rotate);
-            // Hacemos la rotación del pivote que hace que mueva la cuerda y la esfera, solo llegando hasta 90º
+            // Hacemos la rotación del pivote que hace que mueva la cuerda y la esfera.
+            // Esta rotación es sobre el eje x de atrás hacia adelante, solo hasta 90 grados en cada lado
             pivot.rotation.x = Math.sin(Date.now() * 0.001) * Math.PI * 0.5;
 		}
 
