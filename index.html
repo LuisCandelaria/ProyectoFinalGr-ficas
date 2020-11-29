@@ -176,6 +176,7 @@
         luz1.position.set(10, 20, 10);
         // Se agrega la luz a la escena
 		scene.add(luz1);
+		
 
         /*
             Esta función es para renderizar toda la escena,
@@ -188,17 +189,27 @@
             // Renderizamos la escena		
             renderer.render(scene, camera);
 		}
-
+		var speed =0.0001
         /*
             Esta función es la que realiza el movimiento del péndulo, solamente hace una rotación
             del pivote establecido anteriormente.
         */
 		var rotate = function() {
             // Señala el inicio de una animación
-            requestAnimationFrame(rotate);
+			requestAnimationFrame(rotate);
             // Hacemos la rotación del pivote que hace que mueva la cuerda y la esfera, solo llegando hasta 90º
-            pivot.rotation.x = Math.sin(Date.now() * 0.0001) * Math.PI * 0.5;
+            pivot.rotation.x = Math.sin(Date.now() * speed) * Math.PI * 0.5;
 		}
+		
+			document.addEventListener("keydown", onDocumentKeyDown, false);
+			function onDocumentKeyDown(event) {
+				var keyCode = event.which;
+				if (keyCode == 87 && speed<0.0021) {
+					speed=speed+0.0001;
+				} else if (keyCode == 83 && speed>0.0000) {
+					speed=speed-0.0001;
+				}
+			};
 
         // Llamamos la función de render
 		render();
