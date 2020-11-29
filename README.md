@@ -8,7 +8,7 @@
     Bruno Mendez Maldonado A01194018
 </p>
 <br>
-<h2>Propuesta del proyecto - Escenario</h2>
+<h4>Propuesta del proyecto - Escenario</h4>
 <p>
     Nuestra escena principal se trata de crear un péndulo colgante que puedas hacer que oscile por medio del teclado.
 </p>
