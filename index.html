@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Foucault's Pendulum</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r123/three.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <script type="module">
         import * as THREE from '/three/build/three.module.js';
         import { OrbitControls } from '/three/examples/jsm/controls/OrbitControls.js';
@@ -57,19 +55,20 @@
         cielo.material.side = THREE.BackSide;
         scene.add(cielo);
 
-        // Esfera
-        var sphereGeo = new THREE.SphereGeometry(1, 20, 20);
-        var shpereMat = new THREE.MeshLambertMaterial({color: 0xFFCC00});
-        var sphere = new THREE.Mesh(sphereGeo, shpereMat);
-        sphere.position.y = -3
-        scene.add(sphere);
-
-		// Cuerda
+        // Cuerda
 		var cuerdaGeo = new THREE.CylinderBufferGeometry(0.05, 0.05, 8, 32);
 		var cuerdaMat = new THREE.MeshLambertMaterial( {color: 0xcccccc });
 		var cuerda = new THREE.Mesh(cuerdaGeo, cuerdaMat);
 		cuerda.position.y = 2;
 		scene.add(cuerda);
+        
+        // Esfera
+        var sphereGeo = new THREE.SphereGeometry(1, 20, 20);
+        var shpereMat = new THREE.MeshLambertMaterial({color: 0xFFCC00});
+        var sphere = new THREE.Mesh(sphereGeo, shpereMat);
+        sphere.position.y = -3.5;
+        THREE.GeometryUtils.merge(cuerdaGeo, sphereGeo);
+        scene.add(sphere);
         
         // Base
         var baseGeo = new THREE.BoxGeometry( 7, 1, 7 );
@@ -90,29 +89,56 @@
         baseTube2.position.set(-3, 6, 0);
 		scene.add( baseTube2 );
 		
-		cuerdaGeo.translate(0.0, -6, 0.0);
+		/*
+            Esta sección del código hace un pivote (crea un centroide que une las figuras que yo quiera),
+            en este caso como es un pendulo queremos unir la cuerda y la esfera para el movimiento.
+
+            Nota: Al hacer esto, el centroide de las figuras se traslada
+        */
+        //Movemos la cuerda a la posicion deseada
+        cuerdaGeo.translate(0.0, -6.5, 0.0);
+        //Movemos la esfera a la posicion deseada
+        sphereGeo.translate(0.0, -6, 0.0);
+        //Creamos el pivote para agrupar las figuras
 		var pivot = new THREE.Group();
+        //Le damos una posicion al pivote (de acuerdo a la base creada anteriormente)
 		pivot.position.set( 3, 0, 0.0 );
+        //Unimos la base2 con el pivote
 		baseTube2.add( pivot );
+        //Unimos la cuerda al pivote
 		pivot.add( cuerda );
+        //Unimos la esfera al pivote
+        //Nota: Todo se une al pivote porque es lo que hace la rotación
+        pivot.add( sphere );
 
         // Luz
         var luz1 = new THREE.PointLight(0xFFFFFF, 1, 0, 2);
         luz1.position.set(10, 20, 10);
 		scene.add(luz1);
 		
-		let flag = true;
-
         var render = function() {
-			requestAnimationFrame(render);
-			
-			//pivot.rotation.x += 0.01;
+			requestAnimationFrame(render);			
             renderer.render(scene, camera);
 		}
 
-		
+        /*
+            Esta función es la que realiza el movimiento del péndulo, solamente hace una rotación
+            del pivote establecido anteriormente.
+        */
+		var rotate = function() {
+            requestAnimationFrame(rotate);
+            //Hacemos la rotación del pivote que hace que mueva la cuerda y la esfera, solo llegando hasta 90º
+            pivot.rotation.x = Math.sin(Date.now() * 0.0001) * Math.PI * 0.5;
+		}
 
+        //Llamamos la función de render
 		render();
+
+        //Llamamos la animación del péndulo
+        rotate();
+
+
+
 
     </script>
     
