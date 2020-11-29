@@ -1,11 +1,212 @@
-<html>
-	<head>
-		<title>Foucault's Pendulum</title>
-	</head>
-	<body onload="InitDemo();">
-		<canvas id="Canvas_demo" width="1080" height="720">
-		</canvas>
-		<br/>
-		<script src="app.js"></script>
-	</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Foucault's Pendulum</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <script type="module">
+        // Traemos las dependencias
+        import * as THREE from '/three/build/three.module.js';
+        import { OrbitControls } from '/three/examples/jsm/controls/OrbitControls.js';
+
+        // Escena
+        var scene = new THREE.Scene();
+
+        // Camara
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        // Acomodamos la cámara del espectador (usuario);
+        camera.position.z = 30;
+
+        // Renderer
+        var renderer = new THREE.WebGLRenderer({antialias: true});
+        // Se le agrega un color
+        renderer.setClearColor("#e5e5e5");
+        // Se establece el tamaño del renderer
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        document.body.appendChild(renderer.domElement);
+
+        /*
+            Esta función ayuda a que nuestra escena sea responsiva,
+            con cualquier cambio de tamaño en la ventana del navegador
+            no afectarán las figuras en ella.
+        */
+        window.addEventListener('resize', () => {
+            // Restablece el tamaño de la pantalla
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            // Se acomoda el aspect ratio
+            camera.aspect = window.innerWidth / window.innerHeight;
+            // Función para que los cambios surtan efecto
+            camera.updateProjectionMatrix();
+        });
+
+        // Permite que la cámara pueda orbitar alrededor del objeto en pantalla
+        var controls = new OrbitControls(camera, renderer.domElement);
+        // Se establecen los limites
+        controls.maxPolarAngle = Math.PI/2;
+
+        // Piso
+        // Se crea la geometría del piso que se extiende hasta 300 unidades en el eje x,y
+        var pisoGeo = new THREE.PlaneGeometry( 300, 300, 1, 1 );
+        // Rotamos el piso para mejor posicionamiento
+        pisoGeo.rotateX( - Math.PI / 2 );
+        // Cargamos la textura que usaremos para el piso
+        var pisoTexture = new THREE.TextureLoader().load( 'floor.jpg' );
+        // Define como la textura es envuelta
+        pisoTexture.wrapS = pisoTexture.wrapT = THREE.RepeatWrapping;
+        // Hacemos que la textura se repita por toda la figura
+        pisoTexture.repeat.set(20, 20);
+        // Variable para la geometria de la figura con un shader simple (no afectado por la luz)
+        var pisoMat = new THREE.MeshBasicMaterial({map: pisoTexture});
+        // Se hace el mesh de la figura
+        var piso = new THREE.Mesh( pisoGeo, pisoMat );
+        // Se mueve el piso más abajo para ser base para la escena
+        piso.position.y = -8.5;
+        // Se agrega el piso a la escena
+        scene.add( piso );
+
+        // Cielo
+        // Se crea la geometría del cielo con un radio de 300 y con 20 segmentos de ancho y alto
+        var cieloGeo = new THREE.SphereGeometry(300, 20, 20);
+        // Cargamos la textura que usaremos para el cielo
+        var cieloTexture = new THREE.TextureLoader().load('sky.jpg');
+        // Define como la textura es envuelta
+        cieloTexture.wrapS = cieloTexture.wrapT, THREE.RepeatWrapping;
+        // Hacemos que la textura se repita por toda la figura
+        pisoTexture.repeat.set(20, 20);
+        // Variable para la geometria de la figura con un shader simple (no afectado por la luz)
+        var cieloMat = new THREE.MeshBasicMaterial({map: cieloTexture});
+        // Se hace el mesh de la figura
+        var cielo = new THREE.Mesh(cieloGeo, cieloMat);
+        // Definimos que lado de las caras será renderizado
+        cielo.material.side = THREE.BackSide;
+        // Se agrega el cielo a la escena
+        scene.add(cielo);
+
+        // Cuerda
+        // Se crea la geometría de la cuerda con un radio de 0.05 arriba y abajo, con altura de 8 y 32 vértices
+		var cuerdaGeo = new THREE.CylinderBufferGeometry(0.05, 0.05, 8, 32);
+        // Se le agrega un color a la cuerda
+		var cuerdaMat = new THREE.MeshLambertMaterial( {color: 0xcccccc });
+        // Se hace el mesh de la figura
+		var cuerda = new THREE.Mesh(cuerdaGeo, cuerdaMat);
+        // Se mueve la cuerda para mejor posicionamiento
+		cuerda.position.y = 2;
+        // Se agrega la cuerda a la escena
+		scene.add(cuerda);
+        
+        // Esfera
+        // Se crea la geometría de la esfera del péndulo con un radio de 1 y con 20 segmentos de ancho y alto
+        var sphereGeo = new THREE.SphereGeometry(1, 20, 20);
+        // Se le agrega un color a la esfera
+        var shpereMat = new THREE.MeshLambertMaterial({color: 0xFFCC00});
+        // Se hace el mesh de la figura
+        var sphere = new THREE.Mesh(sphereGeo, shpereMat);
+        // Se mueve la esfera para mejor posicionamiento
+        sphere.position.y = -3.5;
+        // Se agrega la esfera a la escena
+        scene.add(sphere);
+        
+        // Base
+        // Se crea la geometría de la caja (base del péndulo) con ancho de 7, alto de 1 y profundidad de 7
+        var baseGeo = new THREE.BoxGeometry( 7, 1, 7 );
+        // Se le agrega un color a la caja
+        var baseMat = new THREE.MeshLambertMaterial( {color: 0xC0C0C0} );
+        // Se hace el mesh de la figura
+        var base = new THREE.Mesh( baseGeo, baseMat );
+        // Se mueve la caja para mejor posicionamiento
+        base.position.set(-7, -8, 0);
+        // Se agrega la caja a la escena
+        scene.add( base );
+
+        // Base - Tubo1
+        // Se crea la geometría del tubo vertical (con la geometría de un cubo) con ancho de 1, alto de 15 y profundidad de 1
+        var baseTube1Geo = new THREE.BoxGeometry( 1, 15, 1 );
+        // Se le agrega un color al tubo
+        var baseTube1Mat = new THREE.MeshLambertMaterial( {color: 0xC0C0C0} );
+        // Se hace el mesh de la figura
+        var baseTube1 = new THREE.Mesh( baseTube1Geo, baseTube1Mat );
+        // Se mueve el tubo para mejor posicionamiento
+        baseTube1.position.set(-7, -1, 0);
+        // Se agrega el tubo vertical a la escena
+        scene.add( baseTube1 );
+
+        // Base - Tubo2
+        // Se crea la geometría del tubo horizontal (con la geometría de un cubo) con ancho de 8, alto de 1 y profundidad de 1
+        var baseTube2Geo = new THREE.BoxGeometry( 8, 1, 1 );
+        // Se le agrega un color al tubo
+        var baseTube2Mat = new THREE.MeshLambertMaterial( {color: 0xC0C0C0} );
+        // Se hace el mesh de la figura
+        var baseTube2 = new THREE.Mesh( baseTube2Geo, baseTube2Mat );
+        // Se mueve el tubo para mejor posicionamiento
+        baseTube2.position.set(-3, 6, 0);
+        // Se agrega el tubo vertical a la escena
+		scene.add( baseTube2 );
+		
+		/*
+            Esta sección del código hace un pivote (crea un centroide que une las figuras que yo quiera),
+            en este caso como es un pendulo queremos unir la cuerda y la esfera para el movimiento.
+
+            Nota: Al hacer esto, el centroide de las figuras se traslada
+        */
+        // Movemos la cuerda a la posicion deseada
+        cuerdaGeo.translate(0.0, -6.5, 0.0);
+        // Movemos la esfera a la posicion deseada
+        sphereGeo.translate(0.0, -6, 0.0);
+        // Creamos el pivote para agrupar las figuras
+		var pivot = new THREE.Group();
+        // Le damos una posicion al pivote (de acuerdo a la base creada anteriormente)
+		pivot.position.set( 3, 0, 0.0 );
+        // Unimos la base2 con el pivote
+		baseTube2.add( pivot );
+        // Unimos la cuerda al pivote
+		pivot.add( cuerda );
+        // Unimos la esfera al pivote
+        // Nota: Todo se une al pivote porque es lo que hace la rotación
+        pivot.add( sphere );
+
+        // Luz
+        // Variable para la emición de, luz, se le agregó un color, intensidad, distancia y decadencia (decay)
+        var luz1 = new THREE.PointLight(0xFFFFFF, 1, 0, 2);
+        // Se movio la luz para mejor posicionamiento
+        luz1.position.set(10, 20, 10);
+        // Se agrega la luz a la escena
+		scene.add(luz1);
+
+        /*
+            Esta función es para renderizar toda la escena,
+            carga todas las figuras que se agregaron a la escena
+            y la cámara con la que el usuario verá el péndulo
+        */
+        var render = function() {
+            // Señala el inicio de una animación
+			requestAnimationFrame(render);
+            // Renderizamos la escena		
+            renderer.render(scene, camera);
+		}
+
+        /*
+            Esta función es la que realiza el movimiento del péndulo, solamente hace una rotación
+            del pivote establecido anteriormente.
+        */
+		var rotate = function() {
+            // Señala el inicio de una animación
+            requestAnimationFrame(rotate);
+            // Hacemos la rotación del pivote que hace que mueva la cuerda y la esfera, solo llegando hasta 90º
+            pivot.rotation.x = Math.sin(Date.now() * 0.0001) * Math.PI * 0.5;
+		}
+
+        // Llamamos la función de render
+		render();
+
+        // Llamamos la animación del péndulo
+        rotate();
+
+    </script>
+    
+</body>
 </html>
