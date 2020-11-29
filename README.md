@@ -7,3 +7,7 @@
     Andres Carlos Barrera Basilio A00815749 <br>
     Bruno Mendez Maldonado A01194018
 </p>
+<p>
+    Nota: Se debe iniciar un servidor para ver el péndulo
+    Una vez en pantalla, el pendulo empezará a moverse al pulsar una tecla
+</p>
