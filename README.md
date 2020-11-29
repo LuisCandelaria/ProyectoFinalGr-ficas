@@ -11,4 +11,3 @@
 <p>
     Página del pándulo:
 </p>
-<a href="https://luiscandelaria.github.io/ProyectoFinalGr-ficas/">Foucault's Pendulum</a>
