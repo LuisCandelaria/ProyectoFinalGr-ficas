@@ -193,19 +193,55 @@
             Esta función es la que realiza el movimiento del péndulo, solamente hace una rotación
             del pivote establecido anteriormente.
         */
+        // Variable que marca la velocidad del péndulo
+        var speed = 0.001; 
 		var rotate = function() {
             // Señala el inicio de una animación
             requestAnimationFrame(rotate);
             // Hacemos la rotación del pivote que hace que mueva la cuerda y la esfera
             // Esta rotación es sobre el eje x de atrás hacia adelante, solo hasta 90 grados en cada lado
-            pivot.rotation.x = Math.sin(Date.now() * 0.001) * Math.PI * 0.5;
+            pivot.rotation.x = Math.sin(Date.now() * speed) * Math.PI * 0.5;
 		}
 
         // Llamamos la función de render
 		render();
 
         // Llamamos la animación del péndulo mediante el teclado
-        document.addEventListener('keydown', rotate, false);
+        // Funcion que agrega funcionalidad a las teclas
+        document.addEventListener("keydown", onDocumentKeyDown, false);
+        // Variable que marca si el péndulo ya ha sido detenido con anterioridad
+        let flag = true;
+        function onDocumentKeyDown(event) {
+            // Varibale que indica la tecla específica que se ha usado
+            var keyCode = event.which;
+            //Si es tecla W aumenta la velocidad, S disminiuye la velocidad, y barra de espacio detiene el pendulo. Cualquier otra tecla inicia la funcion
+            if (keyCode == 87 && speed < 0.0025) {
+                // Se aumenta la velocidad
+                speed = speed + 0.0001;
+            } else if (keyCode == 83 && speed > 0.001) {
+                // Se reduce la velocidad
+                speed = speed - 0.0001;
+            }
+            else if (keyCode == 32) {
+                // If que señala si ya se ha detenido el péndulo
+                if( flag ) {
+                    // Se marca velocidad cero
+                    speed = 0;
+                    // Se invierte la variable booleana para que no pare la velocidad de nuevo
+                    flag = false;
+                }
+                else {
+                    // Se reestablece la velocidad a su estado original
+                    speed = 0.001;
+                    // Se reinicia la variable booleana para que detenga el péndulo a la siguiente vez que se teclee espacio
+                    flag = true;
+                }
+            }
+            else{
+                // Llama la animación para empezar a rotar el péndulo
+                rotate();
+            }
+        };
 
     </script>
     
