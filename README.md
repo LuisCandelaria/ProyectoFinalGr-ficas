@@ -15,7 +15,10 @@
 <br>
 <p>
     Nota: Se debe iniciar un servidor para ver el péndulo <br>
-    Una vez en pantalla, el pendulo empezará a moverse al pulsar una tecla
+    <br>Intrucciones:
+    Una vez en pantalla, el pendulo empezará a moverse al pulsar la tecla Enter<br>
+    Para acelerar el movimiento del péndulo se pula la tecla W, para desacelerarlo la S<br>
+    El péndulo puede detenerse con la tecla Espacio y reanudar con la misma tecla.
 </p>
 <h4>Referencias: </h4>
 <ul>
