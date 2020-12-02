@@ -17,3 +17,8 @@
     Nota: Se debe iniciar un servidor para ver el péndulo <br>
     Una vez en pantalla, el pendulo empezará a moverse al pulsar una tecla
 </p>
+<h4>Referencias: </h4>
+<ul>
+    <li><a href="https://threejs.org/docs/">Documentación de Three.js</a></li>
+    <li><a href="https://youtu.be/6oFvqLfRnsU">Tutorial para Three.js</a></li>
+</ul>
